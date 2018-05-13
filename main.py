@@ -31,7 +31,7 @@ def get_data(max_results, start_index):
 total_items = get_total_items()
 books = []
 
-while results_so_far < 1:  # limit to 200 otherwise use total_items
+while results_so_far < 500:  # limit to 200 otherwise use total_items
     data = get_data(max_results, results_so_far)
     # get the items and title for the results and add to a list for writing to json
     if data and 'items' in data:
@@ -62,15 +62,14 @@ while results_so_far < 1:  # limit to 200 otherwise use total_items
         continue
 
 
-
 def get_max_image_size():
     file_paths = []
     directory = 'images'
     for filename in os.listdir(directory):
-        if filename.endswith(".jpeg") or filename.endswith(".py"): 
+        if filename.endswith(".jpeg") or filename.endswith(".py"):
             file_paths.append(os.path.join(directory, filename))
         continue
-    
+
     # Get the largest image size
     sizes = [Image.open(f, 'r').size for f in file_paths]
     max_size = max(sizes)
@@ -83,12 +82,11 @@ def resize_images():
     file_paths = []
     directory = 'images'
     for filename in os.listdir(directory):
-        if filename.endswith(".jpeg") or filename.endswith(".py"): 
+        if filename.endswith(".jpeg") or filename.endswith(".py"):
             file_paths.append(os.path.join(directory, filename))
         continue
-    
+
     # Get the largest image size
-    max_img_w = get_max_image_size()[0]
     max_img_h = get_max_image_size()[1]
 
     for i in file_paths:
@@ -140,14 +138,14 @@ def make():
     canvas_size = int(m) * get_max_image_size()[1]
     im = Image.new('RGB', (canvas_size, canvas_size), color='white')  # draw the canvas
     # now we have a canvas. we will need to past and step through with the book images
-    
+
     file_paths = []
     directory = 'images/resized'
     for filename in os.listdir(directory):
-        if filename.endswith(".jpeg") or filename.endswith(".py"): 
+        if filename.endswith(".jpeg") or filename.endswith(".py"):
             file_paths.append(os.path.join(directory, filename))
         continue
-    
+
     # if there are 3 squares to a row, we need to count 3 and increase
     # the starting drawing point in the order 0,333,666
     j = 0  # vertical counter
@@ -161,10 +159,10 @@ def make():
             j += 1
         if i % squares_per_row == 0 and i != 0:
             k = 0
-        points = ((k*s, j*s), (k*s, j*s+s), (k*s+s, j*s+s), (k*s+s, j*s)) 
+        points = ((k*s, j*s), (k*s, j*s+s), (k*s+s, j*s+s), (k*s+s, j*s))
         book_img = Image.open(v, 'r')
         im.paste(book_img, points[0])
-        ImageDraw.Draw(im).line((points[0], points[1], points[2], points[3], points[0]),  fill="white", width=border_width) # outline='red', fill='blue'
+        ImageDraw.Draw(im).line((points[0], points[1], points[2], points[3], points[0]),  fill="white", width=border_width)
         k += 1
 
     im.save('allbooks.jpg')  # save the image.
