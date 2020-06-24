@@ -72,8 +72,7 @@ def get_max_image_size():
 
     # Get the largest image size
     sizes = [Image.open(f, 'r').size for f in file_paths]
-    max_size = max(sizes)
-    return max_size
+    return max(sizes)
 
 
 def resize_images():
@@ -127,7 +126,6 @@ def grid(n, m):
             # loop stops when the amount of images can fit in a grid
             # eg ((m = 9) - (word_count = 5) = greater than 0 so use 9 (3x3)
             return float(m)
-            break
 
 
 # given we have a canvas size, now we can work out how many images will take up a row
